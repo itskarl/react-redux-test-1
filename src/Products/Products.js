@@ -31,6 +31,7 @@ const filterProductsByCategory = (category) =>
 
 export const Products = () => {
   const [selectedCategory, selectCategory] = useState('All');
+  const products = filterProductsByCategory(selectedCategory);
 
   return (
     <div className='products-container' >
@@ -50,13 +51,37 @@ export const Products = () => {
             ))
         }
       </nav>
-      <hr />
-      {/*TODO: Replace with responsive products grid*/}
-      <pre dangerouslySetInnerHTML={{__html: JSON.stringify(filterProductsByCategory(selectedCategory), null, 2) }}>
-      </pre>
-
+      <div className="product-grid">
+        {products.map(p => <Product {...p} />)}
+        <div className="product-placeholder" />
+        <div className="product-placeholder" />
+        <div className="product-placeholder" />
+      </div>
     </div>
   )
+}
+
+const Product = ({ id, image, name, price }) => (
+  <div key={id} className="product">
+    <div className="image">
+      <div onClick={() => alert(`details: id${id} name${name} price${price}`)} className="details">
+        Product details
+      </div>
+      <div onClick={() => alert(`picked: ${id} ${name}`)} className="pick">
+        Pick this
+      </div>
+      <img src={image}/>
+    </div>
+    <p>{name}</p>
+    <p>Starting at {price}</p>
+  </div>
+)
+
+Product.propTypes = {
+  id: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
 }
 
 export default Products
