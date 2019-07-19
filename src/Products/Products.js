@@ -6,12 +6,28 @@ import fakeProductsData from './fakeProductsData.json'
 const formatName = (name) => name.replace('&amp;', '&')
 const toSlug = (name) => `#${name.toLowerCase().replace(' ', '-')}`
 
-const mapProduct = (product) => ({
-  id: product.product_id,
-  name: product.name,
-  price: product.cheapest_price,
-  image: product.url
-})
+
+function mapProduct(product) {
+
+  
+  return (
+    <div key={product.product_id+Math.random()} className="product">
+      <div className="img-container">
+        <a className="detail-link" target="_blank" href="https://www.google.com">PRODUCT DETAIL</a>
+        <div
+          className="product-image"
+          style={{backgroundImage: `url(${product.url})`}}
+        />
+        <a className="detail-pick" target="_blank" href="https://www.google.com">PICK THIS</a>
+      </div>
+      <div  className="product-details">
+        <h5 className="product-name">{product.name}</h5>
+        <h5 className="product-price">STARTING AT {product.cheapest_price}</h5>
+      </div>
+    </div>
+  )
+}
+
 
 const filterProductsByCategory = (category) =>
   fakeProductsData['product-catalog']
@@ -25,7 +41,6 @@ const filterProductsByCategory = (category) =>
           .filter(i => i.type === 'product')
           .forEach(i => res.push(mapProduct(i)))
       }
-
       return res
     }, [])
 
@@ -51,10 +66,16 @@ export const Products = () => {
         }
       </nav>
       <hr />
+      { filterProductsByCategory(selectedCategory) }
+      
+      <i aria-hidden="true"></i>
+      <i aria-hidden="true"></i>
+      <i aria-hidden="true"></i>
+      <i aria-hidden="true"></i>
+      <i aria-hidden="true"></i>
+      <i aria-hidden="true"></i>
       {/*TODO: Replace with responsive products grid*/}
-      <pre dangerouslySetInnerHTML={{__html: JSON.stringify(filterProductsByCategory(selectedCategory), null, 2) }}>
-      </pre>
-
+      {/*<pre dangerouslySetInnerHTML={{__html: JSON.stringify(filterProductsByCategory(selectedCategory), null, 2) }}></pre>*/}
     </div>
   )
 }
