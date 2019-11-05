@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import './Products.scss'
 import fakeProductsData from './fakeProductsData.json'
+import ProductPanel from './ProductPanel'
 
 const formatName = (name) => name.replace('&amp;', '&')
 const toSlug = (name) => `#${name.toLowerCase().replace(' ', '-')}`
@@ -29,8 +30,11 @@ const filterProductsByCategory = (category) =>
       return res
     }, [])
 
+
+
 export const Products = () => {
   const [selectedCategory, selectCategory] = useState('All');
+  const productList = (filterProductsByCategory(selectedCategory))
 
   return (
     <div className='products-container' >
@@ -52,8 +56,17 @@ export const Products = () => {
       </nav>
       <hr />
       {/*TODO: Replace with responsive products grid*/}
-      <pre dangerouslySetInnerHTML={{__html: JSON.stringify(filterProductsByCategory(selectedCategory), null, 2) }}>
-      </pre>
+      <div className="row">
+      {
+        productList.map((product, key) => 
+        {return(
+          <ProductPanel product={product} key={key} />
+        )}
+        )
+      }
+      </div>
+      
+
 
     </div>
   )

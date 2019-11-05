@@ -3,6 +3,7 @@
 // ------------------------------------
 export const TODOS_ADD = 'TODOS_ADD'
 export const TODOS_REMOVE = 'TODOS_REMOVE'
+export const TODOS_UPDATE = 'TODOS_UPDATE'
 
 // ------------------------------------
 // Actions
@@ -21,12 +22,21 @@ export function remove (todo) {
   }
 }
 
+export function update (todo) {
+  return {
+    type: TODOS_UPDATE,
+    payload: todo
+  }
+}
+
+
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [TODOS_ADD]: (state, action) => [...state, action.payload],
-  [TODOS_REMOVE]: (state, action) => state.filter(t => t !== action.payload)
+  [TODOS_ADD]: (state, action) => [...state, action.payload.todo],
+  [TODOS_REMOVE]: (state, action) => state.filter(t => t !== action.payload),
+  [TODOS_UPDATE]: (state, action) => state.map((t, idx) => idx === action.payload.id ? action.payload.todo : t )
 }
 
 // ------------------------------------

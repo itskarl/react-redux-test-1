@@ -2,8 +2,10 @@ import { applyMiddleware, compose, createStore as createReduxStore } from 'redux
 import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from './location'
+import throttle from 'lodash/throttle'
+import { loadState, saveState } from './localStorage'
 
-const createStore = (initialState = {}) => {
+const createStore = (initialState = loadState()) => {
   // ======================================================
   // Middleware Configuration
   // ======================================================
@@ -33,6 +35,12 @@ const createStore = (initialState = {}) => {
     )
   )
   store.asyncReducers = {}
+
+  store.subscribe(throttle(() => {
+    saveState({
+      todos: store.getState().todos,
+    })
+  }, 500))
 
   // To unsubscribe, invoke `store.unsubscribeHistory()` anytime
   store.unsubscribeHistory = browserHistory.listen(updateLocation(store))

@@ -44,5 +44,23 @@ const initialState = 0
 export default function counterReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 
-  return handler ? handler(state, action) : state
+  switch (action.type) {
+    case 'COUNTER_INCREASE':
+      return handler(state, action)
+      break
+    case 'COUNTER_DECREASE':
+      if (state === 0) {
+        return state
+      } else {
+        return handler(state, action)
+      }
+      break
+    case 'COUNTER_RESET':
+      return handler(state, action)
+      break
+    default:
+      return state
+  }
+
+  // return handler ? handler(state, action) : state
 }
